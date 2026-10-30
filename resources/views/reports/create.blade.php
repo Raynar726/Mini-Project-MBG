@@ -11,7 +11,17 @@
         <div style="color: green;">{{ session('success') }}</div>
     @endif
 
-    <form action="{{ route('reports.store') }}" method="POST">
+    @if($errors->any())
+        <div style="color: red;">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('reports.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         
         <label>Pilih Sekolah:</label><br>
@@ -32,6 +42,10 @@
 
         <label>Deskripsi Kejadian:</label><br>
         <textarea name="deskripsi_kejadian" rows="5" cols="40" required></textarea><br><br>
+
+        <!-- Input File Bukti Pendukung -->
+        <label>Unggah Bukti Pendukung (JPG, PNG, PDF max 2MB):</label><br>
+        <input type="file" name="file_bukti" accept=".jpg,.jpeg,.png,.pdf"><br><br>
 
         <button type="submit">Kirim Laporan</button>
     </form>

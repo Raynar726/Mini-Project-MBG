@@ -23,7 +23,13 @@ class ReportController extends Controller
             'sekolah_id' => 'required|exists:schools,id',
             'distribusi_id' => 'required|exists:distributions,id',
             'deskripsi_kejadian' => 'required|string',
-        ]);;
+            'file_bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        if ($request->hasFile('file_bukti')) {
+            $path = $request->file('file_bukti')->store('evidences', 'public');
+            $validated['file_bukti'] = $path;
+        }
 
         $validated['pelapor_id'] = 1;
         $validated['status'] = 'menunggu';
