@@ -49,5 +49,12 @@
 
         <button type="submit">Kirim Laporan</button>
     </form>
+
+    <br>
+
+    <form action="{{ route('logout') }}" method="POST" style=margin-bottom: 20px;">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>

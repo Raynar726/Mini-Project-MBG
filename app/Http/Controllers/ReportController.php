@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\School;
 use App\Models\Distribution;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -31,7 +32,7 @@ class ReportController extends Controller
             $validated['file_bukti'] = $path;
         }
 
-        $validated['pelapor_id'] = 1;
+        $validated['pelapor_id'] = Auth::id;
         $validated['status'] = 'menunggu';
 
         Report::create($validated);
