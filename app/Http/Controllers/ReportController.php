@@ -10,15 +10,24 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $query = Report::query();
 
         if ($user->role === 'pelapor') {
-            $reports = Report::where('pelapor_id', $user->id)->get();
-        } else {
-            $reports = Report::all();
+            $query->where('pelapor_id', $user->id);
         }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('deskripsi_kejadian', 'like', '%' . $request->search . '%');
+        }
+
+        $reports = $query->paginate(5)->withQueryString();
 
         return view ('reports.index', compact('reports'));
     }

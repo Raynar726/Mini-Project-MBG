@@ -20,6 +20,19 @@
         <button>+ Buat Laporan Baru</button>
     </a>
     <br><br>
+    <form action="{{ route('reports.index') }}" method="GET" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+        <input type="text" name="search" placeholder="Cari deskripsi..." value="{{ request('search') }}">
+        
+        <select name="status">
+            <option value="">-- Semua Status --</option>
+            <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+            <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
+            <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+        </select>
+        
+        <button type="submit">Cari / Filter</button>
+        <a href="{{ route('reports.index') }}"><button type="button">Reset</button></a>
+    </form>
     @if(session('success'))
     <div style="color: green; padding: 10px; border: 1px solid green; background-color: #f0fff0; margin-bottom: 15px;">
         {{ session('success') }}
@@ -75,5 +88,8 @@
             @endforelse
         </tbody>
     </table>
+    <div style="margin-top: 15px;">
+        {{ $reports->links() }}
+    </div>
 </body>
 </html>
