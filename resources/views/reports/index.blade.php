@@ -20,7 +20,11 @@
         <button>+ Buat Laporan Baru</button>
     </a>
     <br><br>
-
+    @if(session('success'))
+    <div style="color: green; padding: 10px; border: 1px solid green; background-color: #f0fff0; margin-bottom: 15px;">
+        {{ session('success') }}
+    </div>
+    @endif
     <table>
         <thead>
             <tr>
@@ -41,7 +45,21 @@
                 <td>{{ $report->distribusi_id }}</td>
                 <td>{{ $report->pelapor_id }}</td>
                 <td>{{ $report->deskripsi_kejadian }}</td>
-                <td>{{ ucfirst($report->status) }}</td>
+                <td>
+                    @if(Auth::user()->role === 'pelapor')
+                        {{ ucfirst($report->status) }}
+                    @else
+                        <form action="{{ route('reports.updateStatus', $report->id) }}" method="POST" style="margin: 0;">
+                            @csrf
+                            @method('PATCH')
+                            <select name="status" onchange="this.form.submit()">
+                                <option value="menunggu" {{ $report->status === 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                                <option value="diproses" {{ $report->status === 'diproses' ? 'selected' : '' }}>Diproses</option>
+                                <option value="selesai" {{ $report->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                            </select>
+                        </form>
+                    @endif
+                </td>
                 <td>
                     @if($report->file_bukti)
                         <a href="{{ asset('storage/' . $report->file_bukti) }}" target="_blank">Lihat File</a>

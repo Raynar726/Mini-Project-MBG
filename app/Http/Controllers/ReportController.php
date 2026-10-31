@@ -52,4 +52,16 @@ class ReportController extends Controller
 
         return redirect()->back()->with('success', 'Laporan kejadian berhasil dikirim.');
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:menunggu,diproses,selesai'
+        ]);
+
+        $report = Report::findOrFail($id);
+        $report->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Status berhasil diperbarui');
+    }
 }

@@ -16,4 +16,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/laporan/buat', [ReportController::class, 'create'])->name('reports.create');
     Route::post('/laporan', [ReportController::class, 'store'])->name('reports.store');
+    Route::patch('/laporan/{id}/status', [ReportController::class, 'updateStatus'])->name('reports.updateStatus');
 });
