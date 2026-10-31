@@ -80,4 +80,22 @@ class ReportController extends Controller
 
         return response()->json($distribusi);
     }
+
+    public function rekap(Request $request)
+    {
+        $query = \App\Models\Report::query();
+
+        if ($request->filled('sekolah_id')) {
+            $query->where('sekolah_id', $request->sekolah_id);;
+        }
+
+        $totalLaporan = (clone $query)->count();
+        $totalDiproses = (clone $query)->where('status', 'diproses')->count();
+        $totalSelesai = (clone $query)->where('status', 'selesai')->count();
+
+        $reports = $query->get();
+        $schools = \App\Models\School::all();
+
+        return view('reports.rekap', compact('totalLaporan', 'totalDiproses', 'totalSelesai', 'reports', 'schools'));
+    }
 }

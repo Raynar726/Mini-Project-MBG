@@ -18,4 +18,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/laporan', [ReportController::class, 'store'])->name('reports.store');
     Route::patch('/laporan/{id}/status', [ReportController::class, 'updateStatus'])->name('reports.updateStatus');
     Route::get('/api/distribusi/{sekolah_id}', [ReportController::class, 'getDistribusi']);
+    Route::get('/rekap', [ReportController::class, 'rekap'])->name('reports.rekap');
 });
