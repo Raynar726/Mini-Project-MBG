@@ -12,7 +12,13 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $reports = Report::all();
+        $user = Auth::user();
+
+        if ($user->role === 'pelapor') {
+            $reports = Report::where('pelapor_id', $user->id)->get();
+        } else {
+            $reports = Report::all();
+        }
 
         return view ('reports.index', compact('reports'));
     }
@@ -39,7 +45,7 @@ class ReportController extends Controller
             $validated['file_bukti'] = $path;
         }
 
-        $validated['pelapor_id'] = Auth::id;
+        $validated['pelapor_id'] = Auth::id();
         $validated['status'] = 'menunggu';
 
         Report::create($validated);
