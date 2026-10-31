@@ -37,7 +37,7 @@
         @csrf
         
         <label>Pilih Sekolah:</label><br>
-        <select name="sekolah_id" required>
+        <select name="sekolah_id" id="sekolah_id" required>
             <option value="">-- Pilih Sekolah --</option>
             @foreach($schools as $school)
                 <option value="{{ $school->id }}">{{ $school->nama_sekolah }}</option>
@@ -45,11 +45,8 @@
         </select><br><br>
 
         <label>Pilih Distribusi:</label><br>
-        <select name="distribusi_id" required>
+        <select name="distribusi_id" id="distribusi_id" required>
             <option value="">-- Pilih Tanggal Distribusi --</option>
-            @foreach($distributions as $dist)
-                <option value="{{ $dist->id }}">ID Sekolah: {{ $dist->sekolah_id }} - Tanggal: {{ $dist->tanggal_distribusi }}</option>
-            @endforeach
         </select><br><br>
 
         <label>Deskripsi Kejadian:</label><br>
@@ -60,5 +57,28 @@
 
         <button type="submit">Kirim Laporan</button>
     </form>
+    <script>
+        document.getElementById('sekolah_id').addEventListener('change', function() {
+            let sekolahId = this.value;
+            let distribusiSelect = document.getElementById('distribusi_id');
+
+            distribusiSelect.innerHTML = '<option value="">-- Pilih Tanggal Distribusi --</option>';
+
+            if (sekolahId) {
+                // Mengambil data dari server tanpa reload halaman
+                fetch(`/api/distribusi/${sekolahId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(item => {
+                            let option = document.createElement('option');
+                            option.value = item.id;
+                            option.text = `ID Sekolah: ${item.sekolah_id} - Tanggal: ${item.tanggal_distribusi}`;
+                            distribusiSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
 </body>
 </html>

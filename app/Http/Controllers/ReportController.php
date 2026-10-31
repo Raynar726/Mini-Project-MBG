@@ -64,4 +64,11 @@ class ReportController extends Controller
 
         return redirect()->back()->with('success', 'Status berhasil diperbarui');
     }
+
+    public function getDistribusi($sekolah_id)
+    {
+        $distribusi = \App\Models\Distribution::where('sekolah_id', $sekolah_id)->get();
+
+        return response()->json($distribusi);
+    }
 }
