@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
+    public function index()
+    {
+        $reports = Report::all();
+
+        return view ('reports.index', compact('reports'));
+    }
+
     public function create()
     {
         $schools = School::all();
