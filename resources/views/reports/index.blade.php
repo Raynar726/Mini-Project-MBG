@@ -59,9 +59,7 @@
                 <td>{{ $report->pelapor_id }}</td>
                 <td>{{ $report->deskripsi_kejadian }}</td>
                 <td>
-                    @if(Auth::user()->role === 'pelapor')
-                        {{ ucfirst($report->status) }}
-                    @else
+                    @if(Auth::user()->role === 'pemantau')
                         <form action="{{ route('reports.updateStatus', $report->id) }}" method="POST" style="margin: 0;">
                             @csrf
                             @method('PATCH')
@@ -71,6 +69,8 @@
                                 <option value="selesai" {{ $report->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
                             </select>
                         </form>
+                    @else
+                        {{ ucfirst($report->status) }}
                     @endif
                 </td>
                 <td>

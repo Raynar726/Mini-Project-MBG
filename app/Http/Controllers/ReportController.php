@@ -64,6 +64,7 @@ class ReportController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+
         $request->validate([
             'status' => 'required|in:menunggu,diproses,selesai'
         ]);
@@ -84,6 +85,10 @@ class ReportController extends Controller
     public function rekap(Request $request)
     {
         $query = \App\Models\Report::query();
+
+        if (Auth::user()->role === 'pelapor') {
+            abort(403, 'Halaman rekap hanya dapat diakses oleh Pemantau dan Koordinator.');
+        }
 
         if ($request->filled('sekolah_id')) {
             $query->where('sekolah_id', $request->sekolah_id);;
